@@ -1,0 +1,12 @@
+asgiref==3.8.1
+decouple==0.0.7
+Django==5.2
+django-data-browser==4.2.10
+dotenv==0.9.9
+hyperlink==21.0.0
+idna==3.10
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
+six==1.17.0
+sqlparse==0.5.3
+Unipath==1.1
