@@ -102,14 +102,16 @@ INTERNAL_IPS = [
 ]
 
 ROOT_URLCONF = 'multisass.urls'
+TEMPLATE_DIR = os.path.join(CORE_DIR, "app/templates")
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -121,15 +123,36 @@ TEMPLATES = [
 WSGI_APPLICATION = 'multisass.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# Database postgres Docker
+# Docker host : host.docker.internal  or database service name: prodxcloud-django-postgresdb
+# docker inspect prodxcloud-django-postgresdb | grep "IPAddress"
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_NAME", "DB4"),
+        'USER': os.environ.get("POSTGRES_USER", "postgres"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        'HOST': os.environ.get("POSTGRES_HOST", "prodxcloud-django-postgresdb"),
+        'PORT': int(os.environ.get("POSTGRES_PORT", "5432")),
     }
 }
+
+# DATABASE_ROUTERS = (
+#     'django_tenants.routers.TenantSyncRouter',
+# )
+
+
+# #Production / Development MYSQL
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'DB2',
+#         'USER': 'root',
+#         'HOST': 'localhost',
+#         'PASSWORD': '',
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation
@@ -155,20 +178,47 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+STATIC_ROOT = os.path.join(CORE_DIR, "staticfiles")
 STATIC_URL = 'static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+IMAGES_DIR = os.path.join(MEDIA_ROOT, "images")
+
+if not os.path.exists(MEDIA_ROOT) or not os.path.exists(IMAGES_DIR):
+    os.makedirs(IMAGES_DIR)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_PROFILE_MODULE = "auth.User"
+AUTH_USER_MODEL = 'auth.User'
+
+STATICFILES_DIRS = (
+    os.path.join(CORE_DIR, "apps/static")
+)
+
+# Caching parameters
+# MEMUSAGE_ENABLED = True
+# MEMUSAGE_LIMIT_MB = 2048
+# C_FORCE_ROOT = 'true'
+# C_FORCE_ROOT = True
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': os.environ.get("BROKER_URL", "redis://redis:6379/1"),
+#         "KEY_PREFIX": "DB2",
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
