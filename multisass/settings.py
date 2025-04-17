@@ -104,7 +104,7 @@ INTERNAL_IPS = [
     "172.104.60.217",
 ]
 
-ROOT_URLCONF = "multitenantsaas.urls"
+ROOT_URLCONF = "multisass.urls"
 TEMPLATE_DIR = os.path.join(
     CORE_DIR, "apps/templates")  # ROOT dir for templates
 
@@ -124,21 +124,18 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "multitenantsaas.wsgi.application"
+WSGI_APPLICATION = "multisass.wsgi.application"
 
 # Connect to Neo4j Database
 # config.DATABASE_URL = 'bolt://neo4j+s://f89c638e.databases.neo4j.io:7687'
 
-# Database postgres Docker
-# Docker host : host.docker.internal  or database service name: prodxcloud-django-postgresdb
-# docker inspect prodxcloud-django-postgresdb | grep "IPAddress"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("POSTGRES_NAME", "DB2"),
         "USER": os.environ.get("POSTGRES_USER", "postgres"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        "HOST": os.environ.get("POSTGRES_HOST", "prodxcloud-django-postgresdb"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
         "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
     }
 }
