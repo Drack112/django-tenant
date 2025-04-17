@@ -2,7 +2,7 @@ version: "3.9"
 services:
   redis:
     image: "redis:alpine"
-    container_name: prodxcloud-django-redis
+    container_name: redis_saas
     ports:
       - "6379:6379"
     expose:
@@ -11,10 +11,10 @@ services:
       - redisDB:/data
     # networks:
     #     - db_network  #
-  prodxcloud-django-postgresdb:
+  django_saas_postgresdb:
     restart: always
     image: postgres:latest
-    container_name: prodxcloud-django-postgresdb
+    container_name: django_saas_postgresdb
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
