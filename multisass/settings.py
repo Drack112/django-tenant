@@ -222,3 +222,39 @@ STATICFILES_DIRS = (
 #         }
 #     }
 # }
+
+# Celery parameters and Redis  Production parameters
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get(
+    "CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_BROKER_TRANSPORT_URL = os.environ.get(
+    "CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+# CELERY_RESULT_BACKEND= os.environ.get("CELERY_RESULT_BACKEND", "db+postgresql://postgres:postgres@172.104.60.217/DB2")
+BROKER_URL = os.environ.get("BROKER_URL", "redis://redis:6379/1")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = "Asia/Singapore"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
+CELERY_ALWAYS_EAGER = True
+BROKER_HEARTBEAT = 10
+BROKER_HEARTBEAT_CHECKRATE = 2.0
+BROKER_POOL_LIMIT = None
+BROKER_CONNECTION_RETRY = False
+BROKER_CONNECTION_MAX_RETRIES = 0
+BROKER_CONNECTION_TIMEOUT = 120
+BROKER_CONNECTION_RETRY_ON_STARTUP = True
+BROKER_CHANNEL_ERROR_RETRY = True
+BROKER_TRANSPORT = "kombu.transport.django"
+
+# Parameters for SMTP EMAIL EmailBackend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", True)
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_HOST_USER = os.environ.get(
+    "EMAIL_HOST_USER", "notifyprodtestemail1@gmail.com")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "Michael@5151")
+EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
